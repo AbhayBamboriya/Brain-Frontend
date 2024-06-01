@@ -101,15 +101,16 @@ function SignUp(){
         const response=await dispatch(createAccount(formData))
         // // going o home page
         console.log('respone- '+response);
-        // if(response?.payload?.success) navigate('/')
+        if(response?.payload?.success) navigate('/')
         // clearing all the entry
-        // setPreviewImage('')
-        // setSignupData({
-        //     fullName:"",
-        //     email:"",
-        //     password:"",
-        //     avatar:""
-        // })
+        setPreviewImage('')
+        setSignupData({
+            Name:"",
+            email:"",
+            password:"",
+            profile:"",
+            UseerName:""
+        })
 
 
 
@@ -125,7 +126,7 @@ function SignUp(){
                     <p className='text-[20px] text-white' >To keep Connected with us please <br/>   
                         <span className='mx-7'>login with your personal info</span>
                     </p>
-                    <button className='bg-transparent border p-20 mt-2 hover:bg-green-900 transition-all ease-in-out duration-300 rounded-xl py-2 font-semibold text-lg cursor-pointer'>
+                    <button className='bg-transparent border p-20 mt-2 hover:bg-green-900 transition-all ease-in-out duration-300 rounded-xl py-2 font-semibold text-lg cursor-pointer' onClick={()=>navigate('/signin')}>
                         SIGN IN
                     </button>
             </div>
