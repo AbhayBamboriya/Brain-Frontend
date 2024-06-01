@@ -5,6 +5,7 @@ import { useDispatch } from 'react-redux';
 import { isEmail, isValidPassword } from '../Helper/regexMatcher';
 import toast from 'react-hot-toast';
 import { createAccount, found, found1 } from '../Redux/Slices/authSlice';
+import { rule } from 'postcss';
 
 function SignUp(){
     const dispatch =useDispatch();
@@ -60,6 +61,10 @@ function SignUp(){
         console.log('called');
         console.log(signupData);
         e.preventDefault();
+        if(checkbox==false){
+            toast.error('Please accept terms and condition to proceed further')
+            return
+        }
         if(!signupData.profile || !signupData.email || !signupData.UserName || !signupData.Name || !signupData.password){
             toast   .error('Please fill all the details');
             return
@@ -111,8 +116,10 @@ function SignUp(){
         })
     }
 
-
-
+    const [checkbox,setCheckbox]=useState(false)
+    function toggle(){
+        setCheckbox(!checkbox)
+    }
     return (
         <div className="flex items-center justify-center h-[100vh] rounded-lg ">
             <div className="bg-[url('https://www.technocrazed.com/wp-content/uploads/2015/12/Green-Wallpaper-5.jpg')] h-[80vh] w-[30%] rounded-tl-lg rounded-bl-lg flex flex-col items-center justify-center gap-10">
@@ -192,6 +199,16 @@ function SignUp(){
                                     onChange={handleUserInput}
                                     value={signupData.password}
                                     />
+                            </div>
+                            <div>
+                               
+                                <input type="checkbox" 
+                                    required 
+                                    name='checkbox' 
+                                    checked={checkbox}
+                                    onChange={toggle}
+                                />
+                                 <label> Terms and Condition Applied</label>
                             </div>
                         </div>
                         <button type="submit" className='bg-emerald-500 mt-10 p-7  hover:bg-emerald-600 transition-all ease-in-out duration-300 rounded-xl py-2 font-semibold text-lg cursor-pointer'>
