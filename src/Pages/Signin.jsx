@@ -1,8 +1,5 @@
-
-    // import { BsPersonCircle } from 'react-icons/bs'
-// import green from '../assets/green_background.jpg'
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { isEmail } from '../Helper/regexMatcher';
 import toast from 'react-hot-toast';
@@ -13,7 +10,7 @@ function Signin(){
     const navigate=useNavigate();
 
     const [signupData,setSignupData]=useState({
-       
+
         email:"",
         password:""
     })
@@ -87,7 +84,7 @@ function Signin(){
                 <h1 className='text-3xl font-bold text-emerald-700 mt-10'>Sign In</h1>
                 <br/>
                 <div className='w-full h-full flex items-center justify-center brder brder-red-300 mb-60'>
-                    <form noValidate className='borer borderred-400 w-[55%] h-full flex flex-col' onSubmit={signin}>
+                    <form noValidate className='borer borderred-400 w-[55%] h-full flex flex-col gap-8 ' onSubmit={signin}>
                         <div className='gap-3 flex flex-col'>
                             
                             
@@ -120,6 +117,7 @@ function Signin(){
                         <button type="submit" className='bg-emerald-500 mt-10 p-7  hover:bg-emerald-600 transition-all ease-in-out duration-300 rounded-xl py-2 font-semibold text-lg cursor-pointer'>
                             Login Account
                         </button>
+                        <p className="text-center"> Forgot Password ?  <Link to='/forgot' className="link text-red-600 cursor-pointer hover:underline ">Click Here</Link></p>
                     </form>
                     
                 </div>

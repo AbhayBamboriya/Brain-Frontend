@@ -121,7 +121,7 @@ function SignUp(){
     return (
         <div className="flex items-center justify-center h-[100vh] rounded-lg ">
             <div className="bg-[url('https://www.technocrazed.com/wp-content/uploads/2015/12/Green-Wallpaper-5.jpg')] h-[80vh] w-[30%] rounded-tl-lg rounded-bl-lg flex flex-col items-center justify-center gap-10">
-                    <h2 className='text-4xl text-white'>Welcome Back !</h2>
+                    <h2 className='text-4xl text-white'>Welcome !</h2>
            
                     <p className='text-[20px] text-white' >To keep Connected with us please <br/>   
                         <span className='mx-7'>login with your personal info</span>
