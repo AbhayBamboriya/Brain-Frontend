@@ -10,54 +10,25 @@ function Reset(){
     const url= useSelector((state)=>state?.auth?.resetPasswordUrl)
     const [passwordw ,setPassword]=useState({
         password:"",
-        // confirmPassword:"",
         url:url
     })
     
    
     const navigate=useNavigate()
     const dispatch=useDispatch()
-    // useEffect(()=>{
-    //     // console.log('hhh',useSelector((state)=>state?.auth?.resetPasswordUrl));
-    //     if(!url){
-    //         console.log('state',state);
-    //         console.log('coming');
-    //         navigate('/')
-    //     }
-    // })
-    // useEffect(()=>{
-    //     (
-    //         async()=>{
-               
-    //         }
-    //     )()
-    // },[])
-    // console.log('urlx',url);
-    // if(url==undefined){
-    //    console.log('d');
-    //        navigate('/')
-    // }
     
-
     function handleUserInput(e){
         const {name,value}=e.target;
-        // console.log('value',...loginData);
-        // console.log(e.target.value);
-        // console.log('name',value);
+        
         setPassword({
             ...passwordw,
             [name]:value
         })
-        // console.log('password',password);
     }
-
-
-    // let resetPasswordUrl ;
 
     async function onReset(e){
         e.preventDefault()
         console.log('try');
-        // if(!resetPasswordUrl) navigate('/')
         if(!passwordw.password ){
             toast.error('All Feilds are required');
             return
@@ -69,9 +40,6 @@ function Reset(){
         if(res?.payload?.success){
             navigate('/signin')
         }
-
-
-
     }
 
     
@@ -100,19 +68,6 @@ function Reset(){
                             />
 
                     </div>
-                    {/* <div className="flex flex-col gap-1">
-                        <label htmlFor="password" className="font-semibold">Confirm Password</label>
-                        <input type="password"
-                            required
-                            name="confirmPassword"
-                            id="confirmPassword"
-                            placeholder="Enter your password"
-                            onChange={handleUserInput}
-                            value={password.confirmPassword}
-                            className="bg-transparent px-2 py-1 border"
-                            />
-                    </div> */}
-                    {/* ype-sumbmit page will get refresh */}
                     <button type="submit" className="bg-emerald-500 mt-2 text-black hover:bg-emerald-600 transition-all ease-in-out duration-300 rounded-xl py-2 font-semibold text-lg cursor-pointer">
                         Submit
                     </button>

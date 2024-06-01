@@ -1,11 +1,10 @@
 import { BsPersonCircle } from 'react-icons/bs'
-// import green from '../assets/green_background.jpg'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { isEmail } from '../Helper/regexMatcher';
+import { isEmail, isValidPassword } from '../Helper/regexMatcher';
 import toast from 'react-hot-toast';
-import { createAccount } from '../Redux/Slices/authSlice';
+import { createAccount, found, found1 } from '../Redux/Slices/authSlice';
 
 function SignUp(){
     const dispatch =useDispatch();
@@ -17,7 +16,8 @@ function SignUp(){
         email:"",
         password:"",
         profile:"",
-        UserName:""
+        UserName:"",
+        check:true
     })
 
     function handleUserInput(e){
@@ -30,7 +30,6 @@ function SignUp(){
     }
     function getImage(e){
         e.preventDefault();
-        // getting the image on login
         const uploadedImage=e.target.files[0]
 
         if(uploadedImage){
@@ -41,13 +40,22 @@ function SignUp(){
             const fileReader=new FileReader();
             fileReader.readAsDataURL(uploadedImage)
             fileReader.addEventListener('load',function(){
-                // console.log(this.result);
                 setPreviewImage(this.result)
             })
 
         }
     }
+    async function check(e){
+        e.preventDefault()
+        if(!isEmail(signupData.email)){
+            toast.error('Invalid Email Id')
+            return
+        }
+        signupData.check=true
+        const res=await dispatch(found1(signupData))
+        console.log('checking response',res);
 
+    }
     async function createNewAccount(e){
         console.log('called');
         console.log(signupData);
@@ -57,7 +65,6 @@ function SignUp(){
             return
         }
 
-        // checking mane field length
         if(signupData.UserName.length<5){
             toast.error('UserName should be atleast of 5 characters')
             return
@@ -67,28 +74,21 @@ function SignUp(){
             return
         }
 
-        // o get email validator regex google-email regex javascript 
-        // checking for the valid email
         if(!isEmail(signupData.email)){
             toast.error('Invalid Email Id')
             return
         }
 
-        // cheking password validation
-       
-        // (/^
-        // (?=.*\d)                //should contain at least one digit
-        // (?=.*[a-z])             //should contain at least one lower case
-        // (?=.*[A-Z])             //should contain at least one upper case
-        // [a-zA-Z0-9]{8,}         //should contain at least 8 from the mentioned characters
+        if(!isValidPassword(signupData.password)){
+            toast.error('Password should be of 8 character consists of atleast 1 alphanumeric')
+            return
+        }
+        // these verification is for email
+        const res=await dispatch(found1(signupData))
+        if(res?.payload==undefined){
+            return 
+        }
 
-        // $/)
-        console.log('password',signupData.password);
-        // if(signupData.password.match(/(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/)){
-        //     toast.error('Password should contain at least 8 character 1 digit 1 letter and 1 special character')
-        //     return
-        // }
-        
         const formData=new FormData();
         formData.append("Name",signupData.Name)
         formData.append("email",signupData.email)
@@ -97,10 +97,8 @@ function SignUp(){
         formData.append("UserName",signupData.UserName)
 
         console.log('form data',formData);
-        // dispatch creae account action
         const response=await dispatch(createAccount(formData))
-        // // going o home page
-        console.log('respone- '+response);
+        
         if(response?.payload?.success) navigate('/')
         // clearing all the entry
         setPreviewImage('')
@@ -109,11 +107,8 @@ function SignUp(){
             email:"",
             password:"",
             profile:"",
-            UseerName:""
+            UserName:""
         })
-
-
-
     }
 
 
@@ -148,14 +143,12 @@ function SignUp(){
                                     className="hidden" 
                                     type="file" 
                                     onChange={getImage}
-                                    // name through which it will go to server
                                     name="image_uploads"
                                     id="image_uploads"
                                     accept=".jpg,.jpeg,.png,.svg "
                             />
                             
                             <div className="flex flex-col gap-1 w-full brder border-gren-600">
-                                {/* <label htmlFor="fullName" className="font-semibold">Name</label> */}
                                 <input type="text"
                                     required
                                     name="Name"
@@ -167,7 +160,6 @@ function SignUp(){
                                     />
                             </div>
                             <div className="flex flex-col gap-1 w-full brder border-gren-600">
-                                {/* <label htmlFor="fullName" className="font-semibold">Name</label> */}
                                 <input type="text"
                                     required
                                     name="UserName"
@@ -178,20 +170,19 @@ function SignUp(){
                                     value={signupData.UserName}
                                     />
                             </div>
-                            <div className="flex flex-col gap-1">
-                                {/* <label htmlFor="email" className="font-semibold">Email</label> */}
+                            <div className="flex flex- gap-1">
                                 <input type="email"
                                     required
                                     name="email"
                                     id="email"
                                     placeholder="Enter your Email"
-                                    className="bg-transparent px-2 py-1 border"
+                                    className="bg-transparent px-2 py-1 border w-[100%]"
                                     onChange={handleUserInput}
                                     value={signupData.email}
                                     />
+                                {signupData.email && <button className='bg-emerald-500 p-1 text-xs hover:bg-emerald-600 transition-all ease-in-out duration-700 rounded-xl cursor-pointer' onClick={check}> Check Availabilty</button>}
                             </div>
                             <div className="flex flex-col gap-1">
-                                {/* <label htmlFor="password" className="font-semibold">Password</label> */}
                                 <input type="password"
                                     required
                                     name="password"

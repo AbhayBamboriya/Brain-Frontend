@@ -45,26 +45,14 @@ function Signin(){
         const formData=new FormData();
         formData.append("email",signupData.email)
         formData.append("password",signupData.password)
-     
-
-        console.log('form data',formData);
-        console.log(signupData.email);
-        console.log(signupData.password);
-        // dispatch creae account action
+           
         const response=await dispatch(login(signupData))
-        // // going o home page
-        console.log('loginnnn');
         console.log('respone- in login'+JSON.stringify(response));
         if(response?.payload?.success) navigate('/')
-        // clearing all the entry
-        // setPreviewImage('')/
         setSignupData({
             email:"",
             password:"",
         })
-
-
-
     }
 
 
@@ -90,7 +78,6 @@ function Signin(){
                             
                             
                             <div className="flex flex-col gap-1">
-                                {/* <label htmlFor="email" className="font-semibold">Email</label> */}
                                 <input type="email"
                                     required
                                     name="email"
@@ -102,7 +89,6 @@ function Signin(){
                                     />
                             </div>
                             <div className="flex flex-col gap-1">
-                                {/* <label htmlFor="password" className="font-semibold">Password</label> */}
                                 <input type="password"
                                     required
                                     name="password"

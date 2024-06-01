@@ -1,41 +1,29 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import toast from "react-hot-toast";
 import axiosInstance from "../../Helper/axiosInstance";
-import { act } from "react";
 
-// initial state of auth slice
 const initialState={
     isLoggedIn:localStorage.getItem('isLoggedIn')   || false,
-    // role:localStorage.getItem('role') || "",
-    // json .parse is used because when we do refresh then data will be in string format in redux dev tools
-    // data:localStorage.getItem('data') !== undefined ? JSON.parse(localStorage.getItem('data')) :  []
-    // data:JSON.parse(localStorage.getItem('data')) 
+ 
 }  
-// thunk is used to provide the delay
-// string is passed in createAsyncThunk to uniquely identify
+
 export const createAccount=createAsyncThunk('/auth/signup',async(data) =>{
     try{
-        for(var pair of data.entries()) {
-            console.log(pair[0]+ ', '+ pair[1]); 
-        }
         const res=axiosInstance.post("/register",data)
-        console.log('res'+res);
+        console.log('chrckingj');
         toast.promise(res
-            // ,console.log('ressss'+res).toString()
             ,{
             loading:"Wait! Creating your account",
             
             success:(data)=>{
                 return data?.data?.message
             },
-            error:"Failed to create account"
-            // error: (err) => {
-            //     console.error('Failed to create account:', err);
-            //     return "Failed to create account";
-            // }
-            // console.log();
+           
+            error: (err) => {
+                console.error('Failed to create account:', err);
+                return err
+            }
         });
-        // console.log('check');
         return (await res).data
     }
     catch(e){
@@ -45,10 +33,7 @@ export const createAccount=createAsyncThunk('/auth/signup',async(data) =>{
 
 export const found=createAsyncThunk('/check',async(data)=>{
     try{
-        console.log('dataaa',data);
-        console.log('reached here');
         const r= axiosInstance.post('/check',data)
-        // console.log(r);
         toast.promise(r,
             {
                 loading:'Wait! Authentication in Progress ',
@@ -60,7 +45,26 @@ export const found=createAsyncThunk('/check',async(data)=>{
             }
         )
         return (await (r)).data
-        // console.log('cheeckkkk');
+    }
+    catch(e){
+        toast.error(e?.response?.data?.message)
+    }
+})
+
+export const found1=createAsyncThunk('/check',async(data)=>{
+    try{
+        const r= axiosInstance.post('/check',data)
+        toast.promise(r,
+            {
+                loading:'Wait! Authentication in Progress ',
+                success:(res)=>{
+                    if(res?.data?.message){
+                        return res?.data?.message
+                    }
+                }
+            }
+        )
+        return (await (r)).data
     }
     catch(e){
         toast.error(e?.response?.data?.message)
@@ -78,36 +82,18 @@ export const forgot=createAsyncThunk('/forgot',async(data)=>{
 })
 export const login=createAsyncThunk('/auth/signin',async(d) =>{
     try{
-        // console.log('login data',data.email);
-        console.log('for loooooooop');
-        // var data;
-        //     for(var pair of d.entries()) {
-        //         console.log(pair[0]+ ', '+ pair[1]); 
-                
-        //     }
-
-        console.log('suz')
-        // const {email,password}=data;
-        // console.log('checkinggggggg',email,' ',password);
         const res= axiosInstance.post("/login",d)
-        // console.log('res'+(await res).data);
         console.log('login',res);
         toast.promise(res
-            // ,console.log('ressss'+res).toString()
             ,{
             loading:"Wait! Authentication in Progress ",
-            
             success:(data)=>{
                 return data?.data?.message
             },
-            // error:"Failed to Login"
             error: (err) => {
-                // console.error('Failed to create account:', err);
                 return "Login Credential didn't match";
             }
-            // console.log();
         });
-        // console.log('check');
         return (await res).data
     }
     catch(e){
@@ -168,19 +154,7 @@ export const getUserData = createAsyncThunk("/user/details",async ()=>{
 
 export const resetPassword=createAsyncThunk('/resetPassword',async(data)=>{
     try{
-        console.log('reached1');
-        console.log(data);  
-
-        console.log('abhay');
-        // const res=axiosInstance.changeUrl.post(`/${url}`,data)
-        // const res=changePasswordInstance.post(`/${url}`,data)
-        console.log('resetPasswordData',data);
-        console.log('passwordSend',data.passwordW);
-        // l=data.passwordW
-        console.log('sending data',`/user/password/${data.url}`,data);
         const res=axiosInstance.post(`/password/${data.url}`,data)
-
-        console.log('reached');
         toast.promise(res,{
             loading:"Wait! Reset Password in Progress ",
             
@@ -194,7 +168,6 @@ export const resetPassword=createAsyncThunk('/resetPassword',async(data)=>{
         return (await res).data
     }
     catch(e){
-        // console.log('error');
         toast.error(e)
     }
 })
@@ -203,13 +176,9 @@ const authSlice=createSlice({
     initialState,
     reducers:{},
     extraReducers:(builder)=>{
-        // if login in successfull then what to ds
         builder
         .addCase(createAccount.fulfilled,(state,action)=>{
-            // setting the data in the form of string 
-            // we have stored in local storage because
-            // statte will be fetched from local storage
-            // current state will not be accessed from the local storage thatswhy we have saved in the state
+            if(action?.payload==undefined) return
             console.log('actionis',action);
             localStorage.setItem("UserName",action?.payload?.user?.UserName)
             localStorage.setItem("isLoggedIn",true)
@@ -222,16 +191,12 @@ const authSlice=createSlice({
             
         })
         .addCase(login.fulfilled,(state,action)=>{
-            // setting the data in the form of string 
-            // we have stored in local storage because
-            // statte will be fetched from local storage
-            // current state will not be accessed from the local storage thatswhy we have saved in the state
+            if(action?.payload==undefined) return
             console.log('actino from login',action);
             localStorage.setItem("UserName",action?.payload?.user?.UaerName)
             localStorage.setItem("Email",action?.payload?.user?.email)
             localStorage.setItem("url",action?.payload?.user?.profile?.secure_url)
             localStorage.setItem("isLoggedIn",true)
-            // localStorage.setItem("role",action?.payload?.user?.role)
             state.Profile=action?.payload?.user?.profile?.secure_url
             state.isLoggedIn=true
             state.UserName=action?.payload?.UserName
@@ -266,5 +231,4 @@ const authSlice=createSlice({
     }
 })
 
-// export const {}=authSlice.actions
 export default authSlice.reducer

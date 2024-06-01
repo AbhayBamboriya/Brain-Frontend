@@ -14,45 +14,28 @@ function Forgot(){
 
     function handleUserInput(e){
         const {name,value}=e.target;
-        // console.log('value',...loginData);
         setMail({
             ...mail,
             [name]:value
         })
     }
 
-    async function makeRequest() {
-        console.log('before');
-  
-        await delay(1000);
-  
-        console.log('after');
-      }
     async function onForgot(e){
         e.preventDefault();
-        // console.log('mail',mail);
         if(!mail.email){
-            // toast.error('Please fill the details');
+            toast.error('Please fill the details');
             return
         }
-        console.log('reached',mail.email);
         const res=await dispatch(found(mail))
            
-        console.log('responseFromForgotPasswro',res)
         if(res?.payload?.success){
-            console.log('reached here');
             const token=await dispatch(forgot(mail))
-            // console.log(token?.payload?.data?.resetPasswordUrl,'resToken');
-            console.log('tokenin',token);
-            console.log(token?.payload?.data?.resetToken);
-            // makeRequest()
             if(token?.payload?.data?.resetToken){
                 navigate('/resetPassword')
             }
         }
         setMail({
             email:"",
-            // password:"",
         })
     }
     return(
@@ -77,12 +60,9 @@ function Forgot(){
                             placeholder="Enter your Email"
                             onChange={handleUserInput}
                             value={mail.email}
-                            // value={
                             className="bg-transparent px-2 py-1 border text-black"
                             />
                     </div>
-
-                    {/* pe-sumbmit page will get refresh */}
                     <button type="submit" className="bg-emerald-500 text-black  mt-2 hover:bg-emerald-600 transition-all ease-in-out duration-300 rounded-xl py-2 font-semibold text-lg cursor-pointer">
                         Submit
                     </button>
