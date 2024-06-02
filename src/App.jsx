@@ -4,6 +4,7 @@ import SignUp from './Pages/SignUp'
 import Signin from './Pages/Signin'
 import Forgot from './Pages/Forgot'
 import Reset from './Pages/ResetPasswrod'
+import MainPage from './Pages/MainPage'
 function App() {
  
 
@@ -14,8 +15,7 @@ function App() {
           <Route path='/signin' element={<Signin/>}></Route>
           <Route path='/forgot' element={<Forgot/>}></Route>
           <Route path='/resetPassword' element={<Reset/>}></Route>
-          
-
+          <Route path='/main' element={<MainPage/>}></Route>
           {/* <Route path='/login' element={<Login/>}></Route> */}
         </Routes>
     </>

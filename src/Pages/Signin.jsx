@@ -48,7 +48,7 @@ function Signin(){
            
         const response=await dispatch(login(signupData))
         console.log('respone- in login'+JSON.stringify(response));
-        if(response?.payload?.success) navigate('/')
+        if(response?.payload?.success) navigate('/main')
         setSignupData({
             email:"",
             password:"",

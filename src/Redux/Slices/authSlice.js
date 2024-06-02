@@ -4,7 +4,7 @@ import axiosInstance from "../../Helper/axiosInstance";
 
 const initialState={
     isLoggedIn:localStorage.getItem('isLoggedIn')   || false,
- 
+
 }  
 
 export const createAccount=createAsyncThunk('/auth/signup',async(data) =>{
@@ -103,7 +103,7 @@ export const login=createAsyncThunk('/auth/signin',async(d) =>{
 
 export const logout = createAsyncThunk("/auth/logout",async ()=>{
     try{
-        const res=axiosInstance.get("/user/logout")
+        const res=axiosInstance.get("/logout")
         console.log('res'+(await res).data);
         toast.promise(res,{
             loading:"Wait! Logout in Progress ",
@@ -171,6 +171,8 @@ export const resetPassword=createAsyncThunk('/resetPassword',async(data)=>{
         toast.error(e)
     }
 })
+
+
 const authSlice=createSlice({
     name:'auth',
     initialState,
@@ -205,9 +207,11 @@ const authSlice=createSlice({
         })
         .addCase(logout.fulfilled,(state)=>{
             localStorage.clear();
-            state.data={}
+            state.Profile=''
             state.isLoggedIn=false
-            state.role=""
+            state.UserName=''
+            state.email=''
+            state.id=''
         })
 
         .addCase(getUserData.fulfilled,(state,action)=>{
@@ -231,4 +235,5 @@ const authSlice=createSlice({
     }
 })
 
+// export userSlice=
 export default authSlice.reducer
