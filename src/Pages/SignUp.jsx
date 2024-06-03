@@ -29,6 +29,14 @@ function SignUp(){
             [name]:value
         })
     }
+
+    const [passwordVisible, setPasswordVisible] = useState(false);
+
+    function togglePasswordVisibility(){
+        console.log('REA');
+        setPasswordVisible(!passwordVisible);
+        console.log('reached');
+    };
     function getImage(e){
         e.preventDefault();
         const uploadedImage=e.target.files[0]
@@ -155,7 +163,7 @@ function SignUp(){
                                     accept=".jpg,.jpeg,.png,.svg "
                             />
                             
-                            <div className="flex flex-col gap-1 w-full brder border-gren-600">
+                            <div className="flex flex-col gap-1 w-full brder border-gren-600  w-[87%]">
                                 <input type="text"
                                     required
                                     name="Name"
@@ -165,8 +173,9 @@ function SignUp(){
                                     onChange={handleUserInput}
                                     value={signupData.Name}
                                     />
+                                
                             </div>
-                            <div className="flex flex-col gap-1 w-full brder border-gren-600">
+                            <div className="flex flex-col gap-1 w-full brder border-gren-600  w-[87%]">
                                 <input type="text"
                                     required
                                     name="UserName"
@@ -177,7 +186,7 @@ function SignUp(){
                                     value={signupData.UserName}
                                     />
                             </div>
-                            <div className="flex flex- gap-1">
+                            <div className="flex flex- gap-1  w-[87%]">
                                 <input type="email"
                                     required
                                     name="email"
@@ -189,16 +198,19 @@ function SignUp(){
                                     />
                                 {signupData.email && <button className='bg-emerald-500 p-1 text-xs hover:bg-emerald-600 transition-all ease-in-out duration-700 rounded-xl cursor-pointer' onClick={check}> Check Availabilty</button>}
                             </div>
-                            <div className="flex flex-col gap-1">
-                                <input type="password"
+                            <div className="flex flex-wrap gap-1">
+                                <input type={passwordVisible ? 'text' : 'password'}
                                     required
                                     name="password"
                                     id="password"
                                     placeholder="Enter your password"
-                                    className="bg-transparent px-2 py-1 border"
+                                    className="bg-transparent px-2 py-1 border w-[87%]"
                                     onChange={handleUserInput}
                                     value={signupData.password}
                                     />
+                                    <span onClick={togglePasswordVisibility} className='cursor-pointer'>
+                                    {passwordVisible ? 'Hide' : 'Show'}
+                                </span>
                             </div>
                             <div>
                                

@@ -8,13 +8,33 @@ import image from '../assets/green_background.jpg'
 function Signin(){
     const dispatch =useDispatch();
     const navigate=useNavigate();
-
+    let toggle='password'
     const [signupData,setSignupData]=useState({
 
         email:"",
         password:""
     })
 
+
+    const [passwordVisible, setPasswordVisible] = useState(false);
+
+  function togglePasswordVisibility(){
+    console.log('REA');
+    setPasswordVisible(!passwordVisible);
+    console.log('reached');
+  };
+
+    // function change(){
+    //     // console.log('click');
+    //     if(toggle=='text'){
+    //         toggle='password'
+    //     }
+    //     else{
+    //         toggle='text'
+    //     }
+    //     console.log(toggle);
+        
+    // }
     function handleUserInput(e){
         const {name,value}=e.target;
         console.log(name,value);
@@ -84,21 +104,25 @@ function Signin(){
                                     name="email"
                                     id="email"
                                     placeholder="Enter your Email"
-                                    className="bg-transparent px-2 py-1 border"
+                                    className="bg-transparent px-2 py-1 border w-[87%]"
                                     onChange={handleUserInput}
                                     value={signupData.email}
                                     />
                             </div>
-                            <div className="flex flex-col gap-1">
-                                <input type="password"
+                            {/* {console.log('in between',`${toggle}`)} */}
+                            <div className="flex flex-wrap gap-3">
+                                <input type={passwordVisible ? 'text' : 'password'}
                                     required
                                     name="password"
                                     id="password"
                                     placeholder="Enter your password"
-                                    className="bg-transparent px-2 py-1 border"
+                                    className="bg-transparent px-2 py-1 border w-[87%]"
                                     onChange={handleUserInput}
                                     value={signupData.password}
                                     />
+                                <span onClick={togglePasswordVisibility} className='cursor-pointer'>
+                                    {passwordVisible ? 'Hide' : 'Show'}
+                                </span>
                             </div>
                         </div>
                         <button type="submit" className='bg-emerald-500 mt-10 p-7  hover:bg-emerald-600 transition-all ease-in-out duration-300 rounded-xl py-2 font-semibold text-lg cursor-pointer'>

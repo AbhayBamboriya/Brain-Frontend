@@ -28,6 +28,13 @@ function Reset(){
         })
     }
 
+    const [passwordVisible, setPasswordVisible] = useState(false);
+
+    function togglePasswordVisibility(){
+        console.log('REA');
+        setPasswordVisible(!passwordVisible);
+        console.log('reached');
+    };
     async function onReset(e){
         e.preventDefault()
         console.log('try');
@@ -62,15 +69,21 @@ function Reset(){
 
                     <div className="flex flex-col gap-1">
                         <label htmlFor="email" className="font-semibold">Password</label>
-                        <input type="password"
-                            required
-                            name="password"
-                            id="password"
-                            placeholder="Enter your Password"
-                            className="bg-transparent px-2 py-1 border text-black"
-                            onChange={handleUserInput}
-                            value={passwordw.password}
-                            />
+                        <div className="flex flex-wrap gap-2">
+                            <input type={passwordVisible ? 'text' : 'password'}
+                                required
+                                name="password"
+                                id="password"
+                                placeholder="Enter your Password"
+                                className="bg-transparent px-2 py-1 border text-black w-[85%]"
+                                onChange={handleUserInput}
+                                value={passwordw.password}
+                                />
+
+                            <span onClick={togglePasswordVisibility} className='cursor-pointer'>
+                                        {passwordVisible ? 'Hide' : 'Show'}
+                            </span>
+                        </div>
 
                     </div>
                     <button type="submit" className="bg-emerald-500 mt-2 text-black hover:bg-emerald-600 transition-all ease-in-out duration-300 rounded-xl py-2 font-semibold text-lg cursor-pointer">
