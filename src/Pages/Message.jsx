@@ -1,19 +1,23 @@
+import { useEffect } from "react";
 import { useSelector } from "react-redux";
 
 function Messages({data}){
     const userId=useSelector((state)=>state?.auth?.id)
-    console.log('abha',data);
+    // console.log('meskjsjsjfdsjfdjfbbfhb',userId);
     const darkblue='1476ff'
     const light='f9faff'
     const initail='f3f5ff'
-    
-    console.log('checkIIII',userId);
-    const send='flex flex-col gap-2 h-fit w-[30%] bg-[#1476ff] ml-auto mx-2 rounded-br-xl rounded-bl-xl rounded-tl-xl bg-white cursor-pointer transition-all ease-in-out duration-300'
-    const receive='flex flex-col gap-2 h-fit w-[30%] bg-[#${initail}] ml-2 rounded-b-xl rounded-tr-xl bg-white cursor-pointer transition-all ease-in-out duration-300';
+    useEffect(()=>{
+        userId
+    })
+    // console.log('checkIIII',data.id);
+    const send='flex flex-col gap-2 h-fit w-[30%] ml-auto mx-4 rounded-br-xl bg-dark-blue  rounded-bl-xl rounded-tl-xl bg-white cursor-pointer transition-all ease-in-out duration-300'
+    const receive='flex flex-col  gap-2 h-full w-[30%] bg-[#f3f5ff] ml-3 rounded-b-xl rounded-tr-xl cursor-pointer'
     const textareasend='resize-none w-100% h-fit rounded-sm ml-4 bg-transparent text-white'
     const textareareceive='resize-none w-100% h-fit rounded-sm ml-4 '
     let c='';
     let textcss=''
+    
     if(userId!=data.id){
         c=send
         textcss=textareasend
@@ -22,31 +26,31 @@ function Messages({data}){
         c=receive
         textcss=textareareceive
     }
-    console.log('cccc',`${c}`);
+    // console.log('cccc',`${c}`);
     return(
-        <div className={`${c}`}>
-            <div className="flex mt-2 gap-2">
-                <img
-                        className='h-5 w-5 ml-4 rounded-full'
-                        src={data?.url}
-                        alt='User Profile'
+       <div className={`${c} `}>
+            <div className="flex gap-2 mt-3">
+                <img 
+                    src={data?.url}
+                    className="h-7 w-7 ml-4 rounded-full"
                 />
-                <span className="text-sm bg--500 ">
+                <span>
                     {data?.username}
-                </span> 
+                </span>
             </div>
-            {data?.post?.secure_url &&
-                <img
-                className='h-40 w-40 ml-4 rounded-2xl mt-3'
-                src={data?.post?.secure_url}
-                alt='Post'
-        />
+            {
+                data?.post?.secure_url && 
+                    <img
+                        src={data?.post?.secure_url}
+                        className="h-40 w-40 rounded-2xl ml-8 mt-2"
+                        alt="post"
+                    />
             }
-            {data?.message &&
-             <textarea className={`${textcss}`} value={data?.message}></textarea>
+            {
+                data?.message &&
+                    <textarea className="resize-none text-black readOnly  bg-transparent ml-8 mt-2"  value={data?.message}></textarea>
             }
-            
-        </div>
+       </div>
     )
 }
 export default Messages

@@ -1,10 +1,10 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import toast from "react-hot-toast";
 import axiosInstance from "../../Helper/axiosInstance";
+import axios from "axios";
 
 const initialState={
-    isLoggedIn:localStorage.getItem('isLoggedIn')   || false,
-
+   
 }  
 
 export const createAccount=createAsyncThunk('/auth/signup',async(data) =>{
@@ -171,6 +171,22 @@ export const resetPassword=createAsyncThunk('/resetPassword',async(data)=>{
         toast.error(e)
     }
 })
+export const refresh=createAsyncThunk('/refresd',()=>{
+    console.log('refreshing');
+    return true
+})
+
+export const detail=createAsyncThunk('/detail',async(id)=>{
+    try{
+        console.log('detail reached',id);
+        const res=axiosInstance.get('/detail',id)
+        console.log('output',(await res));
+        return (await res).data
+    }
+    catch(e){
+        toast.error(e)
+    }
+})
 
 
 const authSlice=createSlice({
@@ -181,24 +197,36 @@ const authSlice=createSlice({
         builder
         .addCase(createAccount.fulfilled,(state,action)=>{
             if(action?.payload==undefined) return
-            // console.log('actionis',action);
+            console.log('actionis',action);
             localStorage.setItem("UserName",action?.payload?.user?.UserName)
             localStorage.setItem("isLoggedIn",true)
             localStorage.setItem("email",action?.payload?.user?.email)
             localStorage.setItem("url",action?.payload?.user?.profile?.secure_url)
+            
             state.isLoggedIn=true
             state.UserName=action?.payload?.UserName
             state.email=action?.payload?.user?.email
             state.Profile=action?.payload?.user?.profile?.secure_url
             
         })
+        .addCase(refresh.fulfilled,(state,action)=>{
+            // console.log('commmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm');
+            state.isLoggedIn=true
+            state.UserName=localStorage.UserName
+            state.email=localStorage.Email
+            state.Profile=localStorage.url
+            state.id=localStorage.Userid
+
+        })
         .addCase(login.fulfilled,(state,action)=>{
             if(action?.payload==undefined) return
-            // console.log('actino from login',action);
+            console.log('actino from login',action);
             localStorage.setItem("UserName",action?.payload?.user?.UaerName)
             localStorage.setItem("Email",action?.payload?.user?.email)
             localStorage.setItem("url",action?.payload?.user?.profile?.secure_url)
             localStorage.setItem("isLoggedIn",true)
+            localStorage.setItem("Userid",action?.payload?.user?._id)
+            console.log('tryiiiiiii',localStorage);
             state.Profile=action?.payload?.user?.profile?.secure_url
             state.isLoggedIn=true
             state.UserName=action?.payload?.UserName
@@ -225,7 +253,7 @@ const authSlice=createSlice({
         })
 
         .addCase(forgot.fulfilled,(state,action)=>{
-            // console.log('store res',action);
+            console.log('store res',action);
             if(!action?.payload?.data?.resetToken)    return
             localStorage.setItem("resetToken",action?.payload?.data?.resetToken)
             state.resetPasswordUrl=action?.payload?.data?.resetToken

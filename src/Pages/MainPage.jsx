@@ -1,13 +1,14 @@
 import { useEffect, useState } from 'react'
 import {FiMenu} from 'react-icons/fi'
 import { Link, useNavigate, useSearchParams } from 'react-router-dom'
-import {  logout } from '../Redux/Slices/authSlice'
+import {  detail, logout, refresh } from '../Redux/Slices/authSlice'
 import { useDispatch, useSelector } from 'react-redux'
-import { allUser } from '../Redux/Slices/userSlice'
+import { allUser, post } from '../Redux/Slices/userSlice'
 import { IoSend } from "react-icons/io5";
 import User from './User'
 import { message } from '../Redux/Slices/messageSlice'
 import Messages from './Message'
+import toast from 'react-hot-toast'
 // import Messages from './Message'
 // import messageSlice from '../Redux/Slices/messageSlice'
 
@@ -18,9 +19,62 @@ function MainPage(){
     const dispatch=useDispatch()
     const navigate=useNavigate()
     const userId=useSelector((state)=>state?.auth?.id)
-    console.log('user id',userId);
+    // console.log('user id',userId);
+    const id=userId
+    // console.log('iddd',id);
     const userList=useSelector((state)=>state?.user)
     const messages=useSelector((state)=>state?.message)
+    const[postData,setPostData]=useState({
+        message:'',
+        post:'',
+        id:''
+    })
+    function handleUserInput(e){
+        const {name,value}=e.target;
+        console.log(name,value);
+        setPostData({
+            ...postData,
+            [name]:value
+        })
+    }
+
+    function getImage(e){
+        e.preventDefault();
+        const uploadedImage=e.target.files[0]
+
+        if(uploadedImage){
+            setSignupData({
+                ...signupData,
+                profile:uploadedImage
+            })
+            const fileReader=new FileReader();
+            fileReader.readAsDataURL(uploadedImage)
+            fileReader.addEventListener('load',function(){
+                setPreviewImage(this.result)
+            })
+
+        }
+    }
+
+    async function onSubmit(e){
+        // console.log(e);
+        e.preventDefault();
+        console.log('inputtttt',postData.message);
+
+        if(!postData.message){
+            toast.error('Message is required')
+            return
+        }
+
+        postData.id=id
+        const res=await dispatch(post(postData))
+        console.log('response from bacckend',res);
+        if(res?.payload?.success)   Allmessages()
+        setPostData({
+            message:"",
+            post:""
+        })
+    }
 
     function changeWidth(){
         if(width=='0'){
@@ -32,6 +86,9 @@ function MainPage(){
         console.log(width);
     }
 
+    async function information(){
+        await dispatch(refresh())
+    }
     async function allUsers(){
         const res=await dispatch(allUser(userId));
     }
@@ -42,6 +99,7 @@ function MainPage(){
     useEffect(()=>{
         allUsers(),
         Allmessages()
+        information()
     },[])
     async function Logout(){
         const res=await dispatch(logout())
@@ -93,14 +151,21 @@ function MainPage(){
                         }
                         
                 </div>
-                <div className='mt-3 bg-green-600 w-full h-[5%] flex justify-center items-center gap-3'>
-                    <input type="text" 
-                        className='w-1/2 rounded-xl p-2'/>
-                        
+                <div className='mt-3 bg-reen-600 w-full h-[5%] flex justify-center items-center gap-3'>
+                   
+                    <input type="text"
+                                    required
+                                    name="message"
+                                    id="message"
+                                    placeholder="Enter your Message"
+                                    className="px-2 py-1 border w-[60%] h-full"
+                                    onChange={handleUserInput}
+                                    value={postData.message}
+                                    />
 
                         <a className='hover:text-yellow-500 transition-all ease-in-out duration-300 cursor-pointer'>
 
-                             <IoSend className='text-2xl'/>
+                             <IoSend className='text-2xl' onClick={onSubmit}/>
                         </a>
                 </div>
             </div>
