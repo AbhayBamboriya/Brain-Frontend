@@ -73,7 +73,7 @@ export const found1=createAsyncThunk('/check',async(data)=>{
 export const forgot=createAsyncThunk('/forgot',async(data)=>{
     try{
         const res=axiosInstance.post('/reset',data)
-        console.log('response forgot',await (res));
+        // console.log('response forgot',await (res));
         return await res
     }
     catch(e){
@@ -83,7 +83,7 @@ export const forgot=createAsyncThunk('/forgot',async(data)=>{
 export const login=createAsyncThunk('/auth/signin',async(d) =>{
     try{
         const res= axiosInstance.post("/login",d)
-        console.log('login',res);
+        // console.log('login',res);
         toast.promise(res
             ,{
             loading:"Wait! Authentication in Progress ",
@@ -104,7 +104,7 @@ export const login=createAsyncThunk('/auth/signin',async(d) =>{
 export const logout = createAsyncThunk("/auth/logout",async ()=>{
     try{
         const res=axiosInstance.get("/logout")
-        console.log('res'+(await res).data);
+        // console.log('res'+(await res).data);
         toast.promise(res,{
             loading:"Wait! Logout in Progress ",
             
@@ -181,7 +181,7 @@ const authSlice=createSlice({
         builder
         .addCase(createAccount.fulfilled,(state,action)=>{
             if(action?.payload==undefined) return
-            console.log('actionis',action);
+            // console.log('actionis',action);
             localStorage.setItem("UserName",action?.payload?.user?.UserName)
             localStorage.setItem("isLoggedIn",true)
             localStorage.setItem("email",action?.payload?.user?.email)
@@ -194,7 +194,7 @@ const authSlice=createSlice({
         })
         .addCase(login.fulfilled,(state,action)=>{
             if(action?.payload==undefined) return
-            console.log('actino from login',action);
+            // console.log('actino from login',action);
             localStorage.setItem("UserName",action?.payload?.user?.UaerName)
             localStorage.setItem("Email",action?.payload?.user?.email)
             localStorage.setItem("url",action?.payload?.user?.profile?.secure_url)
@@ -225,7 +225,7 @@ const authSlice=createSlice({
         })
 
         .addCase(forgot.fulfilled,(state,action)=>{
-            console.log('store res',action);
+            // console.log('store res',action);
             if(!action?.payload?.data?.resetToken)    return
             localStorage.setItem("resetToken",action?.payload?.data?.resetToken)
             state.resetPasswordUrl=action?.payload?.data?.resetToken

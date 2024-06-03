@@ -7,7 +7,7 @@ const initialState={
 
 export const allUser=createAsyncThunk('/user',async(d)=>{
     try{
-        console.log('d',d);
+        // console.log('d',d);
         const res=axiosInstance.post(`/user/${d}`)
         return (await res).data
     }catch(e){
@@ -23,13 +23,14 @@ const userSlice=createSlice({
     extraReducers:(builder)=>{
         builder
         .addCase(allUser.fulfilled,(state,action)=>{
-            console.log('action of user0',action);
+            // console.log('action of user0',action);
             if(action?.payload==undefined) return
-            console.log('reached reached ',action.payload);
+            // console.log('reached reached ',action.payload);
             if(action.payload){
                 state.userData=[...action.payload]
             }
-        })   
+        })  
+       
     }
 })
 

@@ -104,7 +104,7 @@ function SignUp(){
         console.log('form data',formData);
         const response=await dispatch(createAccount(formData))
         
-        if(response?.payload?.success) navigate('/')
+        if(response?.payload?.success) navigate('/main')
         // clearing all the entry
         setPreviewImage('')
         setSignupData({
@@ -128,7 +128,7 @@ function SignUp(){
                     <p className='text-[20px] text-white' >To keep Connected with us please <br/>   
                         <span className='mx-7'>login with your personal info</span>
                     </p>
-                    <button className='bg-transparent border p-20 mt-2 hover:bg-green-900 transition-all ease-in-out duration-300 rounded-xl py-2 font-semibold text-lg cursor-pointer' onClick={()=>navigate('/signin')}>
+                    <button className='bg-transparent border p-20 mt-2 hover:bg-green-900 transition-all ease-in-out duration-300 rounded-xl py-2 font-semibold text-lg cursor-pointer' onClick={()=>navigate('/')}>
                         SIGN IN
                     </button>
             </div>
