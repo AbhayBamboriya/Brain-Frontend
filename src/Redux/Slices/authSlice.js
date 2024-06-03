@@ -41,7 +41,7 @@ export const found=createAsyncThunk('/check',async(data)=>{
                     console.log('res',res);
                     return res?.data?.message
                 },
-                error:'Enter a registered User Id'
+                // error:'Enter a registered User Id'
             }
         )
         return (await (r)).data
@@ -70,11 +70,11 @@ export const found1=createAsyncThunk('/check',async(data)=>{
         toast.error(e?.response?.data?.message)
     }
 })
-export const forgot=createAsyncThunk('/forgot',async(data)=>{
+export const  forgot=createAsyncThunk('/forgot',async(data)=>{
     try{
         const res=axiosInstance.post('/reset',data)
         // console.log('response forgot',await (res));
-        return await res
+        return (await (res)).data
     }
     catch(e){
         toast.error(e?.response?.data?.message)   
@@ -202,10 +202,11 @@ const authSlice=createSlice({
             localStorage.setItem("isLoggedIn",true)
             localStorage.setItem("email",action?.payload?.user?.email)
             localStorage.setItem("url",action?.payload?.user?.profile?.secure_url)
-            
+            localStorage.setItem("Userid",action?.payload?.user?._id)
             state.isLoggedIn=true
             state.UserName=action?.payload?.UserName
             state.email=action?.payload?.user?.email
+            state.id=action?.payload?.user?._id
             state.Profile=action?.payload?.user?.profile?.secure_url
             
         })

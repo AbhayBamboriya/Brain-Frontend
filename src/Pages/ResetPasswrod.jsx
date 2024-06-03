@@ -3,6 +3,8 @@ import { useDispatch, useSelector } from "react-redux"
 import { Link, useLocation, useNavigate } from "react-router-dom"
 import { AiOutlineArrowLeft } from 'react-icons/ai';
 import { resetPassword } from "../Redux/Slices/authSlice";
+import { isValidPassword } from "../Helper/regexMatcher";
+import toast from "react-hot-toast";
 
 function Reset(){
     const t=4
@@ -33,12 +35,15 @@ function Reset(){
             toast.error('All Feilds are required');
             return
         }
-
+        if(!isValidPassword(passwordw.password)){
+            toast.error('Password should be of 8 character having letter,digits and special character')
+            return
+        }
 
         const res=await dispatch(resetPassword(passwordw))
         console.log('response from resetppassword',res);
         if(res?.payload?.success){
-            navigate('/signin')
+            navigate('/')
         }
     }
 

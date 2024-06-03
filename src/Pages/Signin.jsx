@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux';
 import { isEmail } from '../Helper/regexMatcher';
 import toast from 'react-hot-toast';
 import { login } from '../Redux/Slices/authSlice';
-
+import image from '../assets/green_background.jpg'
 function Signin(){
     const dispatch =useDispatch();
     const navigate=useNavigate();
@@ -59,7 +59,8 @@ function Signin(){
 
     return (
         <div className="flex items-center justify-center h-[100vh] rounded-lg ">
-            <div className="bg-[url('https://www.technocrazed.com/wp-content/uploads/2015/12/Green-Wallpaper-5.jpg')] h-[80vh] w-[30%] rounded-tl-lg rounded-bl-lg flex flex-col items-center justify-center gap-10">
+            <div className={` h-[80vh] w-[30%] bg-[url('https://www.technocrazed.com/wp-content/uploads/2015/12/Green-Wallpaper-5.jpg')] rounded-tl-lg rounded-bl-lg flex flex-col items-center justify-center gap-10`}>
+                {/* <img src={image} className='h-full width-full'/> */}
                     <h2 className='text-4xl text-white'>Welcome Back !</h2>
            
                     <p className='text-[20px] text-white' >Sign Up to use all the features of app <br/>   

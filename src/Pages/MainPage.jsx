@@ -11,6 +11,8 @@ import Messages from './Message'
 import toast from 'react-hot-toast'
 // import Messages from './Message'
 // import messageSlice from '../Redux/Slices/messageSlice'
+import { MdOutlineFileUpload } from "react-icons/md";
+import { BsPersonCircle } from "react-icons/bs"
 
 function MainPage(){
     let w=0
@@ -43,30 +45,28 @@ function MainPage(){
         const uploadedImage=e.target.files[0]
 
         if(uploadedImage){
-            setSignupData({
-                ...signupData,
-                profile:uploadedImage
+            setPostData({
+                ...postData,
+                post:uploadedImage
             })
-            const fileReader=new FileReader();
-            fileReader.readAsDataURL(uploadedImage)
-            fileReader.addEventListener('load',function(){
-                setPreviewImage(this.result)
-            })
-
         }
     }
 
     async function onSubmit(e){
         // console.log(e);
         e.preventDefault();
-        console.log('inputtttt',postData.message);
-
-        if(!postData.message){
-            toast.error('Message is required')
+        console.log('inputtttt',postData);
+        // console.log('check the daraa',e.target.files[0]);
+        // if(!postData.message){
+        //     toast.error('Message is required')
+        //     return
+        // }
+        if(!postData.message && !postData.post){    
+            toast.error('Message or post is required')
             return
         }
-
         postData.id=id
+
         const res=await dispatch(post(postData))
         console.log('response from bacckend',res);
         if(res?.payload?.success)   Allmessages()
@@ -110,9 +110,9 @@ function MainPage(){
     }
     return (    
         <div className="h-screen bg-red-200 flex w-screen scroll-smooth">
-            <div className="drawer absolute ml-3 h-full w-1/6 bg-yellw-300">
-                <input className="drawer-toggle hidden" id="my-drawer" type="checkbox"/>
-                <div className="drawer-content">
+            <div className="drawer absolute ml-3 h-full w-1/6 bg-yellw-300 items-center">
+                {/* <input className="drawer-toggle hidden" id="my-drawer" type="checkbox"/> */}
+                {/* <div className="drawer-content">
                     <label htmlFor="my-drawer" className="cursor-pointer relatuve">
                         <FiMenu
                             size={"32px"}
@@ -120,15 +120,13 @@ function MainPage(){
                             onClick={changeWidth}
                         />
                     </label>    
-                </div>
-                <div className={`w-${width} bg-green-800 overflow-hidden h-[8%] gap-2 rounded-md flex justify-center items-center  transition-all ease-in-out duration-7`}>
+                </div> */}
+                
                     <button className='border border-yellow-500 px-5 py-1 rounded-md font-semibold text-lg cursor-pointer hover:bg-yellow-700 transition-all ease-in-out duration-3' onClick={Logout}>
                         Logout
                     </button>
-                    <button className='border border-yellow-500 px-5 py-1 rounded-md font-semibold text-lg cursor-pointer hover:bg-yellow-700 transition-all ease-in-out duration-3'>
-                        Profile
-                    </button>
-                </div>
+                   
+              
             </div>
             <div className='bg-red-100 mt-20 w-1/4 flex flex-wrap gap-0 items-center justify-center overflow-scroll-y overflow-scroll'>
                 <h2 className='text-xl font-bold mt-2 '>ALL USERS</h2>
@@ -142,7 +140,7 @@ function MainPage(){
 
             </div>
             <div className='items-center bg-blue-100 w-full flex flex-col items-center '>
-                <h1 className='text-center italic text-5xl text-red-500 z-0.3'>Messages</h1>
+                <h1 className='text-center italic text-5xl text-red-500 h-[8%]'>All Post</h1>
                 <div className='h-[85%] bg-orange-100 w-full gap-3 flex flex-col overflow-scroll'>
                         {
                             messages.messageData.map((message)=>{
@@ -161,7 +159,24 @@ function MainPage(){
                                     className="px-2 py-1 border w-[60%] h-full"
                                     onChange={handleUserInput}
                                     value={postData.message}
-                                    />
+                    />
+
+                    
+                    <label htmlFor="image_uploads" className="cursor-pointer">
+                        <MdOutlineFileUpload className='text-2xl rounded-full m-auto'/>
+                    </label>
+                    <input 
+                            className="hidden" 
+                            type="file" 
+                            onChange={getImage}
+                            // name through which it will go to server
+                            name="image_uploads"
+                            id="image_uploads"
+                            accept=".jpg,.jpeg,.png,.svg "
+                    />
+                    
+                        
+                        
 
                         <a className='hover:text-yellow-500 transition-all ease-in-out duration-300 cursor-pointer'>
 

@@ -74,10 +74,10 @@ function SignUp(){
             toast.error('UserName should be atleast of 5 characters')
             return
         }
-        if(signupData.password.length<3){
-            toast.error('Password should be atleast of 3 characters')
-            return
-        }
+        // if(signupData.password.length<8){
+        //     toast.error('Password should be atleast of 8 characters')
+        //     return
+        // }
 
         if(!isEmail(signupData.email)){
             toast.error('Invalid Email Id')
@@ -85,7 +85,7 @@ function SignUp(){
         }
 
         if(!isValidPassword(signupData.password)){
-            toast.error('Password should be of 8 character consists of atleast 1 alphanumeric')
+            toast.error('Password should be of 8 character having letter,digits and special character')
             return
         }
         // these verification is for email
@@ -103,7 +103,7 @@ function SignUp(){
 
         console.log('form data',formData);
         const response=await dispatch(createAccount(formData))
-        
+        console.log('from sign up',response);
         if(response?.payload?.success) navigate('/main')
         // clearing all the entry
         setPreviewImage('')

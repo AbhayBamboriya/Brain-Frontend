@@ -18,9 +18,13 @@ export const allUser=createAsyncThunk('/user',async(d)=>{
 
 export const post=createAsyncThunk('/post',async(data,id)=>{
     try{
-        console.log('id in post',data.id);
-        console.log('data in post',data);
-        const res=axiosInstance.post(`/message/${data.id}`,data)
+        // console.log('id in post',data.id);
+        console.log('data for backend',data);
+        let formData = new FormData()
+        formData.append("message",data?.message)
+        formData.append("post",data?.post)
+       
+        const res=axiosInstance.post(`/message/${data.id}`,formData)
         toast.promise(res,{
             loading:"Wait! Data is Uploading",
             

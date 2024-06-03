@@ -27,10 +27,12 @@ function Forgot(){
             return
         }
         const res=await dispatch(found(mail))
-           
+        console.log('res from forgot forgot',res);
         if(res?.payload?.success){
+            console.log('reachehheehe');
             const token=await dispatch(forgot(mail))
-            if(token?.payload?.data?.resetToken){
+           console.log('res from forgot forgot',token);
+            if(token?.payload?.resetToken){
                 navigate('/resetPassword')
             }
         }
