@@ -222,17 +222,18 @@ const authSlice=createSlice({
         .addCase(login.fulfilled,(state,action)=>{
             if(action?.payload==undefined) return
             console.log('actino from login',action);
-            localStorage.setItem("UserName",action?.payload?.user?.UaerName)
+            localStorage.setItem("UserName",action?.payload?.user?.UserName)
             localStorage.setItem("Email",action?.payload?.user?.email)
             localStorage.setItem("url",action?.payload?.user?.profile?.secure_url)
             localStorage.setItem("isLoggedIn",true)
             localStorage.setItem("Userid",action?.payload?.user?._id)
             console.log('tryiiiiiii',localStorage);
-            state.Profile=action?.payload?.user?.profile?.secure_url
+            state.Profile=localStorage.url
             state.isLoggedIn=true
-            state.UserName=action?.payload?.UserName
-            state.email=action?.payload?.user?.email
-            state.id=action?.payload?.user?._id
+            console.log('username from login',action?.payload?.user?.UserName);
+            state.UserName=localStorage.UserName
+            state.email=localStorage.Email
+            state.id=localStorage.Userid
         })
         .addCase(logout.fulfilled,(state)=>{
             localStorage.clear();

@@ -18,7 +18,8 @@ function SignUp(){
         password:"",
         profile:"",
         UserName:"",
-        check:true
+        check:true,
+        confirmPassword:""
     })
 
     function handleUserInput(e){
@@ -31,10 +32,16 @@ function SignUp(){
     }
 
     const [passwordVisible, setPasswordVisible] = useState(false);
+    const [passwordVisiblec, setPasswordVisiblec] = useState(false);
 
     function togglePasswordVisibility(){
         console.log('REA');
         setPasswordVisible(!passwordVisible);
+        console.log('reached');
+    };
+    function togglePasswordVisibilityc(){
+        console.log('REA');
+        setPasswordVisiblec(!passwordVisiblec);
         console.log('reached');
     };
     function getImage(e){
@@ -69,11 +76,13 @@ function SignUp(){
         console.log('called');
         console.log(signupData);
         e.preventDefault();
+        // return
+
         if(checkbox==false){
             toast.error('Please accept terms and condition to proceed further')
             return
         }
-        if(!signupData.profile || !signupData.email || !signupData.UserName || !signupData.Name || !signupData.password){
+        if(!signupData.profile || !signupData.email || !signupData.UserName || !signupData.Name || !signupData.password || !signupData.confirmPassword){
             toast   .error('Please fill all the details');
             return
         }
@@ -89,6 +98,11 @@ function SignUp(){
 
         if(!isEmail(signupData.email)){
             toast.error('Invalid Email Id')
+            return
+        }
+
+        if(signupData.password != signupData.confirmPassword){
+            toast.error("Password and Confirm Password didn't match")
             return
         }
 
@@ -210,6 +224,20 @@ function SignUp(){
                                     />
                                     <span onClick={togglePasswordVisibility} className='cursor-pointer'>
                                     {passwordVisible ? 'Hide' : 'Show'}
+                                </span>
+                            </div>
+                            <div className="flex flex-wrap gap-1">
+                                <input type={passwordVisiblec ? 'text' : 'password'}
+                                    required
+                                    name="confirmPassword"
+                                    id="confirmPassword"
+                                    placeholder="Confirm your password"
+                                    className="bg-transparent px-2 py-1 border w-[87%]"
+                                    onChange={handleUserInput}
+                                    value={signupData.confirmPassword}
+                                    />
+                                    <span onClick={togglePasswordVisibilityc} className='cursor-pointer'>
+                                    {passwordVisiblec ? 'Hide' : 'Show'}
                                 </span>
                             </div>
                             <div>
