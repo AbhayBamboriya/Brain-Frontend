@@ -4,7 +4,7 @@ import axiosInstance from "../../Helper/axiosInstance";
 import axios from "axios";
 
 const initialState={
-   
+    resetPasswordUrl:''
 }  
 
 export const createAccount=createAsyncThunk('/auth/signup',async(data) =>{
@@ -70,7 +70,7 @@ export const found1=createAsyncThunk('/check',async(data)=>{
         toast.error(e?.response?.data?.message)
     }
 })
-export const  forgot=createAsyncThunk('/forgot',async(data)=>{
+export const forgot=createAsyncThunk('/forgot',async(data)=>{
     try{
         const res=axiosInstance.post('/reset',data)
         // console.log('response forgot',await (res));
@@ -164,7 +164,7 @@ export const resetPassword=createAsyncThunk('/resetPassword',async(data)=>{
             },
             error:"Failed to Reset Password"
         });
-        console.log('res',res);
+        // console.log('res',res);
         return (await res).data
     }
     catch(e){
@@ -255,10 +255,11 @@ const authSlice=createSlice({
         })
 
         .addCase(forgot.fulfilled,(state,action)=>{
-            console.log('store res',action);
-            if(!action?.payload?.data?.resetToken)    return
+            console.log('store responded',action);
+            if(!action?.payload?.resetToken)    return
             localStorage.setItem("resetToken",action?.payload?.data?.resetToken)
-            state.resetPasswordUrl=action?.payload?.data?.resetToken
+            console.log('kfke',action?.payload?.resetToken);
+            state.resetPasswordUrl=action?.payload?.resetToken
         })
         
         

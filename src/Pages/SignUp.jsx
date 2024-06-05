@@ -91,10 +91,7 @@ function SignUp(){
             toast.error('UserName should be atleast of 5 characters')
             return
         }
-        // if(signupData.password.length<8){
-        //     toast.error('Password should be atleast of 8 characters')
-        //     return
-        // }
+
 
         if(!isEmail(signupData.email)){
             toast.error('Invalid Email Id')
